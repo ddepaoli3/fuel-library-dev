@@ -721,6 +721,13 @@ class osnailyfacter::cluster_ha {
       }
 
     } # COMPUTE ENDS
+    
+    "monitoring" : {
+      # Context-Broker
+      if $monitoring_hash['context_broker'] {
+        include context-broker
+      }
+    }
 
     "mongo" : {
       class { 'openstack::mongo_secondary':
