@@ -16,6 +16,14 @@ class osnailyfacter::cluster_simple {
     }
   }
 
+  # FIWARE-FICORE Start
+  if !$::fuel_settings['monitoring'] {
+    $monitoring_hash = {}
+  } else {
+    $monitoring_hash = $::fuel_settings['monitoring']
+  }
+  # FIWARE-FICORE End
+  
   if $fuel_settings['cinder_nodes'] {
      $cinder_nodes_array   = $::fuel_settings['cinder_nodes']
   } else {
@@ -507,6 +515,10 @@ class osnailyfacter::cluster_simple {
     } # COMPUTE ENDS
     
     "monitoring" : {
+
+      # NodeJs
+      include nodejs
+      
       # Context-Broker
       if $monitoring_hash['context_broker'] {
         include context-broker
