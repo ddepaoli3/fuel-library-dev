@@ -20,7 +20,7 @@ BUSYBOX_IMAGE="busybox.tar.gz"
 # base centos image for all containers
 BASE_IMAGE="centos.tar.gz"
 # Order in which to start all containers
-CONTAINER_SEQUENCE="postgres rabbitmq keystone rsync astute rsyslog nailgun ostf nginx cobbler mcollective"
+CONTAINER_SEQUENCE="postgres rabbitmq keystone rsync astute rsyslog nailgun ostf nginx cobbler mcollective puppetdb"
 
 ZIP_EXT=${ZIP_EXT:-".tar.xz"}
 # source images for apps
@@ -36,6 +36,7 @@ SOURCE_IMAGES['nginx']="${IMAGE_DIR}/nginx${ZIP_EXT}"
 SOURCE_IMAGES['rsyslog']="${IMAGE_DIR}/rsyslog${ZIP_EXT}"
 SOURCE_IMAGES['mcollective']="${IMAGE_DIR}/mcollective${ZIP_EXT}"
 SOURCE_IMAGES['keystone']="${IMAGE_DIR}/keystone${ZIP_EXT}"
+SOURCE_IMAGES['puppetdb']="${IMAGE_DIR}/keystone${ZIP_EXT}"
 
 # storage container names
 PREFIX_STORAGE="fuel-storage-${VERSION}-"
@@ -57,6 +58,7 @@ CONTAINER_NAMES['nginx']="${prefix}nginx"
 CONTAINER_NAMES['rsyslog']="${prefix}rsyslog"
 CONTAINER_NAMES['mcollective']="${prefix}mcollective"
 CONTAINER_NAMES['keystone']="${prefix}keystone"
+CONTAINER_NAMES['puppetdb']="${prefix}puppetdb"
 
 # app container options
 declare -A CONTAINER_OPTIONS
@@ -77,6 +79,7 @@ CONTAINER_OPTIONS["nginx"]="-p ${BIND_ALL}8000:8000 -p ${BIND_ALL}8080:8080 $bas
 CONTAINER_OPTIONS["rsyslog"]="--privileged -p ${BIND_ADMIN}514:514 -p ${BIND_LOCAL}514:514 -p ${BIND_ADMIN}514:514/udp -p ${BIND_LOCAL}514:514/udp -p ${BIND_ADMIN}25150:25150 -p ${BIND_LOCAL}25150:25150 $base_opts"
 CONTAINER_OPTIONS["mcollective"]="--privileged $base_opts"
 CONTAINER_OPTIONS["keystone"]="-p ${BIND_ALL}5000:5000 -p ${BIND_ALL}35357:35357 $base_opts"
+CONTAINER_OPTIONS["puppetdb"]="-p ${BIND_ALL}58443:58443 -h fuel.domain.tld $base_opts"
 
 ######
 #DRAFT: Dependency of volumes for deployment
