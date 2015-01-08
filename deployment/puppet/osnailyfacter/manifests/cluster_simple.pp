@@ -16,6 +16,14 @@ class osnailyfacter::cluster_simple {
     }
   }
 
+  # FIWARE-FICORE Start
+  if !$::fuel_settings['monitoring'] {
+    $monitoring_hash = {}
+  } else {
+    $monitoring_hash = $::fuel_settings['monitoring']
+  }
+  # FIWARE-FICORE End
+  
   if $fuel_settings['cinder_nodes'] {
      $cinder_nodes_array   = $::fuel_settings['cinder_nodes']
   } else {
@@ -517,6 +525,21 @@ class osnailyfacter::cluster_simple {
       }
 
     } # COMPUTE ENDS
+<<<<<<< HEAD
+=======
+    
+    "monitoring" : {
+
+      # NodeJs
+      include nodejs
+      
+      # Context-Broker
+      if $monitoring_hash['context_broker'] {
+        include context-broker
+      }
+    }
+
+>>>>>>> origin/si/2.0
     "mongo" : {
       if $debug {
         $mongo_set_parameter = 'logLevel=2'

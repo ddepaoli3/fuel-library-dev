@@ -19,7 +19,15 @@ class osnailyfacter::cluster_ha {
     $num_networks         = $novanetwork_params['num_networks']
     $vlan_start           = $novanetwork_params['vlan_start']
   }
-
+  
+  # FIWARE-FICORE Start
+  if !$::fuel_settings['monitoring'] {
+    $monitoring_hash = {}
+  } else {
+    $monitoring_hash = $::fuel_settings['monitoring']
+  }
+  # FIWARE-FICORE End
+  
   if $cinder_nodes {
     $cinder_nodes_array   = $::fuel_settings['cinder_nodes']
   }
@@ -768,6 +776,17 @@ class osnailyfacter::cluster_ha {
       }
 
     } # COMPUTE ENDS
+    
+    "monitoring" : {
+
+       # NodeJs
+      include nodejs
+
+      # Context-Broker
+      if $monitoring_hash['context_broker'] {
+        include context-broker
+      }
+    }
 
     "mongo" : {
       if $debug {
