@@ -34,4 +34,13 @@ class install-puppet-3.5.1 {
     require => File["script_install_puppet"],
   }
 
+  class { 'puppetdb::master::config':
+    puppetdb_server => '10.20.0.2',  # TODO: no dns/host configured on nodes?
+    puppetdb_port   =>  58443,
+    restart_puppet  =>  false,  # the default true trows an error:
+                                # Could not find init script or upstart
+                                # conf file for 'puppetmaster'
+    require => Exec["exec_install_puppet"],
+  }
+
 }
