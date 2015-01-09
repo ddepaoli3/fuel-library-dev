@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Probably not needed
+DEBIAN_FRONTEND=noninteractive
+export DEBIAN_FRONTEND
+
+dpkg --force-confdef --force-confold --install packages/*deb
