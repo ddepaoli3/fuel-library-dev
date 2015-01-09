@@ -525,8 +525,6 @@ class osnailyfacter::cluster_simple {
       }
 
     } # COMPUTE ENDS
-<<<<<<< HEAD
-=======
     
     "monitoring" : {
 
@@ -539,7 +537,6 @@ class osnailyfacter::cluster_simple {
       }
     }
 
->>>>>>> origin/si/2.0
     "mongo" : {
       if $debug {
         $mongo_set_parameter = 'logLevel=2'
@@ -577,6 +574,7 @@ class osnailyfacter::cluster_simple {
 #        ceilometer_db_password      => $ceilometer_hash['db_password'],
 #      }
 #    } # MONGO ENDS
+
     "cinder" : {
       include keystone::python
       #FIXME(bogdando) notify services on python-amqp update, if needed
