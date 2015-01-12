@@ -1,4 +1,4 @@
-class install-puppet-3.5.1 {
+class install-puppet-351 {
 
   file { "base_dir_install_puppet":
     path => "/var/tmp/puppet-install/",
@@ -16,12 +16,12 @@ class install-puppet-3.5.1 {
     group  => "root",
     recurse => "true",
     mode   => "0750",
-    source => "puppet:///modules/puppet-3.5.1/packages/",
+    source => "puppet:///modules/puppet-351/packages/",
     require => File["base_dir_install_puppet"],
   }
 
   file { "script_install_puppet":
-    source => "puppet:///modules/puppet-3.5.1/install_puppet-3.5.1",
+    source => "puppet:///modules/puppet-351/install_puppet-3.5.1",
     path => "/var/tmp/puppet-install/install_puppet-3.5.1",
     mode => 0700,
     require => File["dir_install_puppet"],
@@ -44,3 +44,5 @@ class install-puppet-3.5.1 {
   }
 
 }
+
+include install-puppet-351
