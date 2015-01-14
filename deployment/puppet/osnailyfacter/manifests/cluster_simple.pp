@@ -150,32 +150,6 @@ class osnailyfacter::cluster_simple {
   } else {
     $is_cinder_node = false
   }
-  $monitoring = filter_nodes($nodes_hash,'role','monitoring')
-
-  if (!empty($monitoring)) {
-     $monitoring_node_address = $monitoring[0]['internal_address']
-     $monitoring_node_public = $monitoring[0]['public_address']
-    } else {
-     $monitoring_node_public = '127.0.0.1'
-     $monitoring_node_address = '127.0.0.1'
-  }
-
-  if ($::fuel_settings['cinder']) {
-    if (member($cinder_nodes_array,'all')) {
-      $is_cinder_node = true
-    } elsif (member($cinder_nodes_array,$::hostname)) {
-      $is_cinder_node = true
-    } elsif (member($cinder_nodes_array,$internal_address)) {
-      $is_cinder_node = true
-    } elsif ($node[0]['role'] =~ /controller/ ) {
-      $is_cinder_node = member($cinder_nodes_array,'controller')
-    } else {
-      $is_cinder_node = member($cinder_nodes_array,$node[0]['role'])
-    }
-  } else {
-    $is_cinder_node = false
-  }
-
 
   $cinder_iscsi_bind_addr = $::storage_address
 
@@ -497,7 +471,14 @@ class osnailyfacter::cluster_simple {
         }
       }
 
-        $controller_services = concat($basic_services,$network_services)
+      $basic_services = ['nova-compute','libvirt']
+      $network_services = $::use_quantum ? {
+        true  => ['quantum',],
+        false => ['nova-network',],
+        default => ['nova-network',]
+      }
+
+      $controller_services = concat($basic_services, $network_services)
 
         class {'nagios':
                proj_name	=> 'xifi-monitoring',
@@ -601,14 +582,7 @@ class osnailyfacter::cluster_simple {
 
       if $monitoring_hash['use_nagios'] {
 
-        $basic_services = ['nova-compute','libvirt']
-              $network_services = $::use_quantum ? {
-                true  => ['quantum'],
-                false => ['nova-network'],
-                default => ['nova-network']
-              }
-
-        $compute_services = concat($basic_services,$network_services)
+        $compute_services = concat($basic_services, $network_services)
         class {'nagios':
                proj_name        => 'xifi-monitoring',
                services         => $compute_services,
