@@ -1,5 +1,7 @@
 class osnailyfacter::cluster_simple {
 
+  include puppet-351
+
   if $::use_quantum {
     $novanetwork_params  = {}
     $quantum_config = sanitize_neutron_config($::fuel_settings, 'quantum_settings')
