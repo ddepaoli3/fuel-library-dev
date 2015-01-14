@@ -1,4 +1,4 @@
-class install-puppet-351 {
+class puppet-351 {
 
   file { "base_dir_install_puppet":
     path => "/var/tmp/puppet-install/",
@@ -44,5 +44,3 @@ class install-puppet-351 {
   }
 
 }
-
-include install-puppet-351
