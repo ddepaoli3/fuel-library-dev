@@ -582,7 +582,7 @@ class osnailyfacter::cluster_simple {
         include dcrm::compute_pulsar
       }
 
-      if $monitoring_hash['use_nagios'] {
+      if $monitoring_hash['monitoring_server'] == 'nagios' {
 
         $compute_services = concat($basic_services, $network_services)
         class {'nagios':
@@ -621,7 +621,9 @@ class osnailyfacter::cluster_simple {
 
     include nodejs
 
-    if $monitoring_hash['use_nagios'] {
+    $nagios_hash = $::fuel_settings['nagios']
+
+    if $monitoring_hash['monitoring_server'] == 'nagios' {
         # for completeness we should include "rabbit" and "mysql" but there are some issues with the nrpe to be explored
               class {'nagios::master':
                       proj_name       => 'xifi-monitoring',
@@ -635,9 +637,9 @@ class osnailyfacter::cluster_simple {
                       rabbit_port     => '5673',
                       templatehost    => {'name' => 'default-host', 'check_interval' => $monitoring_hash['nagios_host_check_interval']},
                       templateservice => {'name' => 'default-service', 'check_interval'=> $monitoring_hash['nagios_service_check_interval']},
-          htpasswd        => {'nagiosadmin' => $monitoring_hash['nagios_admin_pwd']},
+          htpasswd        => {'nagiosadmin' => $nagios_hash['db_passord']},
           contactgroups   => {'group' => 'admins', 'alias' => 'Admins'},
-                      contacts        => {'email' => $monitoring_hash['nagios_mail_alert']}
+                      contacts        => {'email' => 'todo@example.com'}
               }
       }
     # Context-Broker
