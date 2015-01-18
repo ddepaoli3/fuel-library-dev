@@ -587,7 +587,6 @@ class osnailyfacter::cluster_simple {
       if $monitoring_hash['monitoring_server'] == 'nagios' {
 
         $compute_services = concat($basic_services, $network_services)
-        class {'nagios':
         $basic_services = ['nova-compute','libvirt']
         $network_services = $::use_quantum ? {
           true  => ['quantum',],
@@ -595,6 +594,7 @@ class osnailyfacter::cluster_simple {
           default => ['nova-network',]
         }
 
+        class {'nagios':
                proj_name        => 'xifi-monitoring',
                services         => $compute_services,
                whitelist        => [$monitoring_node_address, $monitoring_node_public, $controller_node_address, $controller_node_public],
