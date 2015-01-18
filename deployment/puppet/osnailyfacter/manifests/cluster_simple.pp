@@ -25,12 +25,20 @@ class osnailyfacter::cluster_simple {
     $monitoring_hash = {}
   } else {
     $monitoring_hash = $::fuel_settings['monitoring']
-  }
-
   if $fuel_settings['cinder_nodes'] {
      $cinder_nodes_array   = $::fuel_settings['cinder_nodes']
+  }
+
   } else {
     $cinder_nodes_array = []
+  # why
+  $basic_services = ['nova-compute', 'libvirt']
+  $network_services = $::use_quantum ? {
+    true  => ['quantum', ],
+    false => ['nova-network', ],
+    default => ['nova-network', ]
+  }
+
   }
 
   # All hash assignment from a dimensional hash must be in the local scope or they will
@@ -475,20 +483,13 @@ class osnailyfacter::cluster_simple {
         }
       }
 
-      $basic_services = ['nova-compute','libvirt']
-      $network_services = $::use_quantum ? {
-        true  => ['quantum',],
-        false => ['nova-network',],
-        default => ['nova-network',]
-      }
-
       $controller_services = concat($basic_services, $network_services)
 
-        class {'nagios':
-               proj_name	=> 'xifi-monitoring',
-               services		=> $controller_services,
-               whitelist	=> [$monitoring_node_address, $monitoring_node_public],
-          hostgroup	=> 'controller-nodes'
+      class {'nagios':
+        services => $controller_services,
+        proj_name => 'xifi-monitoring',
+        whitelist => [$monitoring_node_address, $monitoring_node_public],
+        hostgroup => 'controller-nodes'
           }
       if ($::mellanox_mode == 'ethernet') {
         $ml2_eswitch = $::fuel_settings['neutron_mellanox']['ml2_eswitch']
@@ -585,15 +586,7 @@ class osnailyfacter::cluster_simple {
       }
 
       if $monitoring_hash['monitoring_server'] == 'nagios' {
-
-        $compute_services = concat($basic_services, $network_services)
-        $basic_services = ['nova-compute','libvirt']
-        $network_services = $::use_quantum ? {
-          true  => ['quantum',],
-          false => ['nova-network',],
-          default => ['nova-network',]
-        }
-
+        $compute_services = concat($basic_services,$network_services)
         class {'nagios':
                proj_name        => 'xifi-monitoring',
                services         => $compute_services,
