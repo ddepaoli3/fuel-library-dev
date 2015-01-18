@@ -25,10 +25,10 @@ class osnailyfacter::cluster_simple {
     $monitoring_hash = $::fuel_settings['monitoring']
   if $fuel_settings['cinder_nodes'] {
      $cinder_nodes_array   = $::fuel_settings['cinder_nodes']
+  } else {
+     $cinder_nodes_array = []
   }
 
-  } else {
-    $cinder_nodes_array = []
   # why
   $basic_services = ['nova-compute', 'libvirt']
   $network_services = $::use_quantum ? {
