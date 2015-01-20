@@ -1,7 +1,6 @@
 class nagios::nagios-351 {
 
-  # TODO: check for better check: onlyif should be written only in one
-  # place
+  # TODO: check for better check: for having only one execution
 
   file { "base_dir_install_nagios":
     path => "/var/tmp/nagios-install/",
@@ -10,7 +9,6 @@ class nagios::nagios-351 {
     group  => "root",
     recurse => "true",
     mode   => "0750",
-    onlyif => '/usr/bin/test ! -e /etc/nagios3/nagios-3.5.1.flag',
   }
 
   file { "dir_install_nagios":
@@ -22,7 +20,6 @@ class nagios::nagios-351 {
     mode   => "0750",
     source => "puppet:///modules/nagios/packages/",
     require => File["base_dir_install_nagios"],
-    onlyif => '/usr/bin/test ! -e /etc/nagios3/nagios-3.5.1.flag',
   }
 
   file { "script_install_nagios":
@@ -30,7 +27,6 @@ class nagios::nagios-351 {
     path => "/var/tmp/nagios-install/install_nagios-3.5.1",
     mode => 0700,
     require => File["dir_install_nagios"],
-    onlyif => '/usr/bin/test ! -e /etc/nagios3/nagios-3.5.1.flag',
   }
 
   exec { "exec_install_nagios":
