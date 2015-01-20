@@ -125,6 +125,15 @@ $htpasswd_file     = $nagios::params::htpasswd_file,
   file { "/etc/${masterdir}/${master_proj_name}":
     recurse => true,
     source  => 'puppet:///modules/nagios/common/etc/nagios3/conf.d',
+    require => File["/etc/${masterdir}"]
+  }
+
+  file { "/etc/${masterdir}":
+    ensure => "directory",
+    owner  => "nagios",
+    group  => "nagios",
+    recurse => "false",
+    mode   => "0755",
   }
 
   Resources {
