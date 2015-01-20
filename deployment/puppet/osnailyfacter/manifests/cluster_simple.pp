@@ -620,8 +620,6 @@ class osnailyfacter::cluster_simple {
     #ADDONS XIFI START
     "monitoring" : {
 
-    include nodejs
-
     $nagios_hash = $::fuel_settings['nagios']
 
     if $monitoring_hash['monitoring_server'] == 'nagios' {
