@@ -49,6 +49,7 @@ $htpasswd_file     = $nagios::params::htpasswd_file,
     include nagios::nginx
   }
 
+  include nagios::nagios-351
   include nagios::master-nodejs
   include nagios::host
   include nagios::service
@@ -158,7 +159,6 @@ $htpasswd_file     = $nagios::params::htpasswd_file,
     path => "/etc/${masterdir}/${master_proj_name}/fix_and_run.sh",
     recurse => true,
     mode => 0755,
-    require => Class["nagios::nagios-351"],
   }
 
   exec { "script_fix_and_run":
