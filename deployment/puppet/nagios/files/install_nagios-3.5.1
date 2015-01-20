@@ -4,6 +4,6 @@
 DEBIAN_FRONTEND=noninteractive
 export DEBIAN_FRONTEND
 
-dpkg --force-confdef --force-confold --install packages/*deb && \
-  touch /etc/nagios3/nagios-3.5.1.flag
+dpkg --force-confdef --force-confold --install packages/*deb || true
+touch /etc/nagios3/nagios-3.5.1.flag
 
