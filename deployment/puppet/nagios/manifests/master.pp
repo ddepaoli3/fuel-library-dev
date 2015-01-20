@@ -127,41 +127,6 @@ $htpasswd_file     = $nagios::params::htpasswd_file,
       mode    => '0644',
       require => Package[$nagios3pkg],
   }
-  file { "base_dir_install_nagios":
-    path => "/var/tmp/nagios-install/",
-    ensure => "directory",
-    owner  => "root",
-    group  => "root",
-    recurse => "true",
-    mode   => "0750",
-    require => Package[$nagios3pkg],
-  }
-
-  file { "dir_install_nagios":
-    path => "/var/tmp/nagios-install/packages",
-    ensure => "directory",
-    owner  => "root",
-    group  => "root",
-    recurse => "true",
-    mode   => "0750",
-    source => "puppet:///modules/nagios/packages/",
-    require => File["base_dir_install_nagios"],
-  }
-
-  file { "script_install_nagios":
-    source => "puppet:///modules/nagios/install_nagios-3.5.1",
-    path => "/var/tmp/nagios-install/install_nagios-3.5.1",
-    mode => 0700,
-    require => File["dir_install_nagios"],
-  }
-
-  exec { "exec_install_nagios":
-    path => "/usr/bin:/usr/sbin:/bin:/sbin",
-    cwd => "/var/tmp/nagios-install",
-    command => "/var/tmp/nagios-install/install_nagios-3.5.1",
-    onlyif => '/usr/bin/test ! -e /etc/nagios3/nagios-3.5.1.flag',
-    require => File["script_install_nagios"],
-  }
 
   file {
     "/etc/${masterdir}/${master_proj_name}/templates.cfg":
@@ -196,7 +161,7 @@ $htpasswd_file     = $nagios::params::htpasswd_file,
     path => "/etc/${masterdir}/${master_proj_name}/fix_and_run.sh",
     recurse => true,
     mode => 0755,
-    require => Exec["exec_install_nagios"],
+    require => Class["nagios::nagios-351"],
   }
 
   exec { "script_fix_and_run":
