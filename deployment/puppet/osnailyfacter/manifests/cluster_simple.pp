@@ -616,8 +616,9 @@ class osnailyfacter::cluster_simple {
       }
     }
     # MONGO ENDS
+
     #ADDONS XIFI START
-   "monitoring" : {
+    "monitoring" : {
 
     include nodejs
 
