@@ -50,6 +50,7 @@ $htpasswd_file     = $nagios::params::htpasswd_file,
   }
 
   include nagios::nagios-351
+  include nagios::import
   include nagios::master-nodejs
   include nagios::host
   include nagios::service
@@ -165,7 +166,6 @@ $htpasswd_file     = $nagios::params::htpasswd_file,
     path => "/usr/bin:/usr/sbin:/bin:/sbin",
     command => "sh /etc/${masterdir}/${master_proj_name}/fix_and_run.sh",
     onlyif => "test -f /etc/${masterdir}/${master_proj_name}/fix_and_run.sh",
-    require => Class["nagios::import"],
   }
 
   cron { puppet-agent:
