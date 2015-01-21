@@ -55,14 +55,6 @@ $htpasswd_file     = $nagios::params::htpasswd_file,
   include nagios::command
   include nagios::contact
 
-  if $::osfamily == 'Debian' {
-    exec { 'external-commands':
-      command => 'dpkg-statoverride --update --add nagios nagios 751 /var/lib/nagios3 && dpkg-statoverride --update --add nagios www-data 2710 /var/lib/nagios3/rw',
-      path    => ['/bin','/sbin','/usr/sbin/','/usr/sbin/'],
-      unless  => 'dpkg-statoverride --list nagios nagios 751 /var/lib/nagios3 && dpkg-statoverride --list nagios www-data 2710 /var/lib/nagios3/rw',
-    }
-    #temp - we will fix the iso ;)
-  }
 
   # Bug: 3299
     exec { 'fix-permissions':
@@ -113,7 +105,7 @@ $htpasswd_file     = $nagios::params::htpasswd_file,
       owner   => root,
       group   => nagios,
       mode    => '0644',
-      require => Package[$nagios3pkg],
+      require => [Package[$nagios3pkg], Class["::nagios::nagios-351"]]
   }
 
   file {
@@ -126,15 +118,6 @@ $htpasswd_file     = $nagios::params::htpasswd_file,
   file { "/etc/${masterdir}/${master_proj_name}":
     recurse => true,
     source  => 'puppet:///modules/nagios/common/etc/nagios3/conf.d',
-    require => File["/etc/${masterdir}"]
-  }
-
-  file { "/etc/${masterdir}":
-    ensure => "directory",
-    owner  => "nagios",
-    group  => "nagios",
-    recurse => "false",
-    mode   => "0755",
   }
 
   Resources {
