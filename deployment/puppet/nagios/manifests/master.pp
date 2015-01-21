@@ -49,9 +49,7 @@ $htpasswd_file     = $nagios::params::htpasswd_file,
     include nagios::nginx
   }
 
-  include nagios::nagios-351
   include nagios::import
-  include nagios::master-nodejs
   include nagios::host
   include nagios::service
   include nagios::command
