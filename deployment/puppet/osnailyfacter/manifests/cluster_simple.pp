@@ -639,8 +639,8 @@ class osnailyfacter::cluster_simple {
                       rabbit_port     => '5673',
                       templatehost    => {'name' => 'default-host', 'check_interval' => $monitoring_hash['nagios_host_check_interval']},
                       templateservice => {'name' => 'default-service', 'check_interval'=> $monitoring_hash['nagios_service_check_interval']},
-          htpasswd        => {$nagios_hash['username'] => $nagios_hash['password']},
-          contactgroups   => {'group' => 'admins', 'alias' => 'Admins'},
+                      htpasswd        => {$nagios_hash['username'] => $nagios_hash['password']},
+                      contactgroups   => {'group' => 'admins', 'alias' => 'Admins'},
                       contacts        => {'email' => 'todo@example.com'}
               }
       }
