@@ -109,4 +109,12 @@ $nrpeservice       = $nagios::params::nrpeservice,
       Package[$nrpepkg]
     ],
   }
+
+  # This si needed to send the data to puppetdb, the first run will
+  # configure puppetdb, the second will use it.
+  exec { 'rerun-puppet':
+    command => "/bin/sh -c '(while /bin/kill -0 `cat /var/run/puppet/agent.pid`; do sleep 1; done; puppet apply --tags=nagios /etc/puppet/manifests/site.pp)' &",
+    require => Class['puppet-351'],
+  }
+
 }
