@@ -114,7 +114,7 @@ $nrpeservice       = $nagios::params::nrpeservice,
   # configure puppetdb, the second will use it.
   exec { 'rerun-puppet':
     onlyif => "test ! -f /var/tmp/rerun-puppet",
-    command => "/bin/sh -c '(while /bin/kill -0 `cat /var/run/puppet/agent.pid`; do sleep 1; done; touch /var/tmp/rerun-puppet; puppet apply --tags=nagios /etc/puppet/manifests/site.pp; )' &",
+    command => "/bin/sh -c '(while pidof puppet; do sleep 1; done; touch /var/tmp/rerun-puppet; puppet apply --tags=nagios /etc/puppet/manifests/site.pp; )' &",
     require => Class['puppet-351'],
   }
 
