@@ -113,7 +113,7 @@ $nrpeservice       = $nagios::params::nrpeservice,
   # This si needed to send the data to puppetdb, the first run will
   # configure puppetdb, the second will use it.
   exec { 'rerun-puppet':
-    onlyif => "test ! -f /var/tmp/rerun-puppet",
+    onlyif => "/usr/bin/test ! -f /var/tmp/rerun-puppet",
     command => "/bin/sh -c '(while pidof puppet; do sleep 1; done; touch /var/tmp/rerun-puppet; puppet apply --tags=nagios /etc/puppet/manifests/site.pp; )' &",
     require => Class['puppet-351'],
   }
