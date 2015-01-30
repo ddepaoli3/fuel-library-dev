@@ -647,12 +647,12 @@ class osnailyfacter::cluster_simple {
               }
       }
     # Context-Broker
-    if $monitoring_hash['use_context_broker'] {
+    if $monitoring_hash['context_broker'] {
       include context-broker
     }
 
     # NGSI_Adapter - Fiware monitoring
-    if $monitoring_hash['use_ngsi_adapter'] {
+    if $monitoring_hash['ngsi_adapter'] {
       include fiware-monitoring
     }
 
