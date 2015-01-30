@@ -39,7 +39,7 @@ class context-broker {
 	package { "libcurl4-openssl-dev":
 	    ensure => "installed"
 	}->
-	package { "libgcrypt11-dev":
+	package { "libgcrypt11-fi-dev":
 	    ensure => "installed"
 	}->
 	package { "mongodb":
