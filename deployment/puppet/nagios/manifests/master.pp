@@ -120,20 +120,20 @@ $htpasswd_file     = $nagios::params::htpasswd_file,
     source  => 'puppet:///modules/nagios/common/etc/nagios3/conf.d',
   }
 
-  Resources {
-    purge => true,
-  }
+  # Resources {
+  #   purge => true,
+  # }
 
-  resources {
-    'nagios_command':;
-    'nagios_contact':;
-    'nagios_contactgroup':;
-    'nagios_host':;
-    'nagios_hostgroup':;
-    'nagios_hostextinfo':;
-    'nagios_service':;
-    'nagios_servicegroup':;
-  }
+  # resources {
+  #   'nagios_command':;
+  #   'nagios_contact':;
+  #   'nagios_contactgroup':;
+  #   'nagios_host':;
+  #   'nagios_hostgroup':;
+  #   'nagios_hostextinfo':;
+  #   'nagios_service':;
+  #   'nagios_servicegroup':;
+  # }
 
   #TODO remove fix_and_run script in order to fix glance-registry service bug
   file { "script_copy_fix":
