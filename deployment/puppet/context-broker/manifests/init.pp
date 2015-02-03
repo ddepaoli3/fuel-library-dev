@@ -36,12 +36,15 @@ class context-broker {
 	# end workaround contextbroker on Ubuntu
 
         # installation libcurl4-openssl-dev libgcrypt11-dev mongodb
-	package { "libcurl4-openssl-dev":
-	    ensure => "installed"
-	}->
-	package { "libgcrypt11-fi-dev":
-	    ensure => "installed"
-	}->
+
+## Commented due to dependencies problems.
+## It seems that these are not required
+#	package { "libcurl4-openssl-dev":
+#	    ensure => "installed"
+#	}->
+#	package { "libgcrypt11-fi-dev":
+#	    ensure => "installed"
+#	}->
 	package { "mongodb":
 	    ensure => "installed"
 	}->
