@@ -419,8 +419,7 @@ class osnailyfacter::cluster_ha {
       }
 
       # OpenStack Data Collector
-
-  if $monitoring_hash['use_openstack_data_collector'] {
+  if $monitoring_hash['odc'] {
           class {'odc':
                       username        =>      'nova',
                       password        =>      $nova_hash[user_password],
@@ -436,7 +435,7 @@ class osnailyfacter::cluster_ha {
             }
    }
 
-    if $monitoring_hash['use_nagios'] {
+    if $monitoring_hash['nagios'] {
 
         class {'nagios':
                proj_name	=> 'xifi-monitoring',
@@ -458,7 +457,7 @@ class osnailyfacter::cluster_ha {
         include dcrm::ha_controller_secondary_pulsar
       }
 
-    if $monitoring_hash['use_nagios'] {
+    if $monitoring_hash['nagios'] {
 
        class {'nagios':
                proj_name	=> 'xifi-monitoring',
@@ -850,7 +849,7 @@ class osnailyfacter::cluster_ha {
         Class['openstack::compute'] -> Class['ceph']
       }
 
-    if $monitoring_hash['use_nagios'] {
+    if $monitoring_hash['nagios'] {
 
         $basic_services = ['nova-compute','nova-network','libvirt']
         $network_services = $::use_quantum ? {
@@ -931,8 +930,11 @@ class osnailyfacter::cluster_ha {
  #ADDONS XIFI START
    "monitoring" : {
     include nodejs
+    include nagios::master-nodejs
 
-    if $monitoring_hash['use_nagios'] {
+     $nagios_username = $nagios_hash['username']
+
+    if $monitoring_hash['nagios'] {
              class {'nagios::master':
                       proj_name       => 'xifi-monitoring',
                       rabbitmq        => true,
@@ -945,7 +947,7 @@ class osnailyfacter::cluster_ha {
                       rabbit_port     => '5673',
                       templatehost    => {'name' => 'default-host', 'check_interval' => $monitoring_hash['nagios_host_check_interval']},
                       templateservice => {'name' => 'default-service', 'check_interval'=> $monitoring_hash['nagios_service_check_interval']},
-                      htpasswd        => {'nagiosadmin' => $monitoring_hash['nagios_admin_pwd']},
+                      htpasswd        => {"$nagios_username" => $nagios_hash['password']},
                       hostgroups      => ['compute-nodes', 'controller-nodes', 'swift-storage', 'swift-proxy'],
                       contactgroups   => {'group' => 'admins', 'alias' => 'Admins'},
                       contacts        => {'email' => $monitoring_hash['nagios_mail_alert']}
@@ -953,12 +955,12 @@ class osnailyfacter::cluster_ha {
       }
 
    # Context-Broker
-    if $monitoring_hash['use_context_broker'] {
+    if $monitoring_hash['context_broker'] {
       include context-broker
     }
 
    # NGSI_Adapter - Fiware monitoring
-    if $monitoring_hash['use_ngsi_adapter'] {
+    if $monitoring_hash['ngsi_adapter'] {
       include fiware-monitoring
     }
 
@@ -1013,7 +1015,7 @@ class osnailyfacter::cluster_ha {
 #      }
 
      #ADDONS XIFI START
-      if $monitoring_hash['use_nagios'] {
+      if $monitoring_hash['nagios'] {
         class {'nagios':
                proj_name        => 'xifi-monitoring',
                services         => ['cinder-volume'],
