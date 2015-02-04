@@ -931,7 +931,6 @@ class osnailyfacter::cluster_ha {
     $nagios_hash = $::fuel_settings['nagios']
     $nagios_username = $nagios_hash['username']
 
-    if $monitoring_hash['nagios'] {
              class {'nagios::master':
                       proj_name       => 'xifi-monitoring',
                       rabbitmq        => true,
@@ -949,7 +948,6 @@ class osnailyfacter::cluster_ha {
                       contactgroups   => {'group' => 'admins', 'alias' => 'Admins'},
                       contacts        => {'email' => $monitoring_hash['nagios_mail_alert']}
              }
-      }
 
    # Context-Broker
     if $monitoring_hash['context_broker'] {
