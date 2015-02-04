@@ -108,12 +108,6 @@ class osnailyfacter::cluster_ha {
      $federation_hash = $::fuel_settings['federation']
   }
 
-   if !$::fuel_settings['monitoring'] {
-    $monitoring_hash = {}
-  } else {
-    $monitoring_hash = $::fuel_settings['monitoring']
-  }
-
   if !$rabbit_hash['user'] {
     $rabbit_hash['user'] = 'nova'
   }
