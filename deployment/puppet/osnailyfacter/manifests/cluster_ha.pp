@@ -417,7 +417,13 @@ class osnailyfacter::cluster_ha {
         include dcrm
         include dcrm::controller_pulsar
       }
-
+  # FIWARE-FICORE Start
+  if !$::fuel_settings['monitoring'] {
+    $monitoring_hash = {}
+  } else {
+    $monitoring_hash = $::fuel_settings['monitoring']
+  }
+  # FIWARE-FICORE End
       # OpenStack Data Collector
   if $monitoring_hash['odc'] {
           class {'odc':
