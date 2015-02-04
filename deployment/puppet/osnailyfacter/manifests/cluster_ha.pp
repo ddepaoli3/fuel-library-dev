@@ -887,17 +887,6 @@ class osnailyfacter::cluster_ha {
 
     } # COMPUTE ENDS
 
-    "monitoring" : {
-
-       # NodeJs
-      include nodejs
-
-      # Context-Broker
-      if $monitoring_hash['context_broker'] {
-        include context-broker
-      }
-    }
-
     "mongo" : {
       if $debug {
         $mongo_set_parameter = 'logLevel=2'
