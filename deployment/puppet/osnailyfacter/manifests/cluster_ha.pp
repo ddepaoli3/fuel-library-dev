@@ -928,7 +928,8 @@ class osnailyfacter::cluster_ha {
     include nagios::master-nodejs
     include nagios::nagios-351
 
-     $nagios_username = $nagios_hash['username']
+    $nagios_hash = $::fuel_settings['nagios']
+    $nagios_username = $nagios_hash['username']
 
     if $monitoring_hash['nagios'] {
              class {'nagios::master':
