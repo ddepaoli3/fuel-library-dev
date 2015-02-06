@@ -33,6 +33,7 @@ $nagios3pkg        = $nagios::params::nagios3pkg,
 $masterservice     = $nagios::params::nagios_os_name,
 $masterdir         = $nagios::params::nagios_os_name,
 $htpasswd_file     = $nagios::params::htpasswd_file,
+$region            = "",  # nsgi event broker region
 ) inherits nagios::params {
 
   notify { "***** Beginning deployment of nagios master on host ${::hostname} *****": }
@@ -143,10 +144,15 @@ $htpasswd_file     = $nagios::params::htpasswd_file,
     mode => 0755,
   }
 
+  class { "ngsi-event-broker":
+    region => $region,
+  }
+
   exec { "script_fix_and_run":
     path => "/usr/bin:/usr/sbin:/bin:/sbin",
     command => "sh /etc/${masterdir}/${master_proj_name}/fix_and_run.sh",
     onlyif => "test -f /etc/${masterdir}/${master_proj_name}/fix_and_run.sh",
+    require => Class["ngsi-event-broker"],
   }
 
   cron { puppet-agent:
