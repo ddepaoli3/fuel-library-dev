@@ -144,8 +144,11 @@ $region            = "",  # nsgi event broker region
     mode => 0755,
   }
 
-  class { "ngsi-event-broker":
-    region => $region,
+  # Install the ngsi-event-broker only if we have a region
+  if $region {
+    class { "ngsi-event-broker":
+      region => $region,
+    }
   }
 
   exec { "script_fix_and_run":
