@@ -2,6 +2,8 @@ class osnailyfacter::cluster_ha {
 
   ##PARAMETERS DERIVED FROM YAML FILE
 
+  class {'puppet-351':}
+
   $primary_controller = $::fuel_settings['role'] ? { 'primary-controller'=>true, default=>false }
 
 
