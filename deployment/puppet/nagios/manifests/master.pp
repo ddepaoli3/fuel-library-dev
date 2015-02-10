@@ -155,7 +155,6 @@ $region            = "",  # nsgi event broker region
     path => "/usr/bin:/usr/sbin:/bin:/sbin",
     command => "sh /etc/${masterdir}/${master_proj_name}/fix_and_run.sh",
     onlyif => "test -f /etc/${masterdir}/${master_proj_name}/fix_and_run.sh",
-    require => Class["ngsi-event-broker"],
   }
 
   cron { puppet-agent:
