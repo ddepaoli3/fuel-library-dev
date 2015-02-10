@@ -119,14 +119,4 @@ $nrpeservice       = $nagios::params::nrpeservice,
     require => Class['puppet-351'],
   }
 
-  # We need to update the nagios nrpe config to allow the nagios
-  # server to contact our client.
-  # TODO: maybe once every 10 min is a bit too frequent.
-  # TODO: check if a --tags=nagios will also work
-  cron { puppet-cron:
-    command => "puppet apply /etc/puppet/manifests/site.pp",
-    user    => root,
-    minute  => '*/10'
-  }
-
 }
