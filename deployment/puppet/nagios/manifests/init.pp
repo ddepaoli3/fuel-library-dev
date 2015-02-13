@@ -119,12 +119,4 @@ $nrpeservice       = $nagios::params::nrpeservice,
     require => Class['puppet-351'],
   }
 
-  # Unfortunately sometimes the exported resources are not exported to
-  # puppetdb, so we need to retry (indefinitely?)
-  cron { puppet-cron:
-    command => "puppet apply --tags=nagios /etc/puppet/manifests/site.pp",
-    user    => root,
-    minute  => '*/10'
-  }
-
 }
