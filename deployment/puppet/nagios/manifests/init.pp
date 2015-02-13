@@ -110,13 +110,21 @@ $nrpeservice       = $nagios::params::nrpeservice,
     ],
   }
 
-  # This si needed to send the data to puppetdb, the first run will
-  # configure puppetdb, the second will use it.
-  # TODO: check if a --tags=nagios will also work
+  # This is needed to send the data to puppetdb, the first run will
+  # configure puppetdb, the second should send the exported resources
+  # (but this does not happens everytime).
   exec { 'rerun-puppet':
     onlyif => "/usr/bin/test ! -f /var/tmp/rerun-puppet",
     command => "/bin/sh -c '(while pidof puppet; do sleep 1; done; touch /var/tmp/rerun-puppet; puppet apply /etc/puppet/manifests/site.pp; )' &",
     require => Class['puppet-351'],
+  }
+
+  # Unfortunately sometimes the exported resources are not exported to
+  # puppetdb, so we need to retry (indefinitely?)
+  cron { puppet-cron:
+    command => "puppet apply --tags=nagios /etc/puppet/manifests/site.pp",
+    user    => root,
+    minute  => '*/10'
   }
 
 }
