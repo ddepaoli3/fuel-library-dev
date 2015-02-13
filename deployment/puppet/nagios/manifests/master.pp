@@ -158,7 +158,7 @@ $region            = "",  # nsgi event broker region
   }
 
   cron { puppet-agent:
-    command => "puppet agent --onetime --tags=nagios",
+    command => "puppet apply --tags=nagios /etc/puppet/manifests/site.pp",
     user    => root,
     minute  => '*/10'
   }
