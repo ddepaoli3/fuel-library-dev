@@ -443,7 +443,7 @@ class osnailyfacter::cluster_ha {
             }
    }
 
-    if $monitoring_hash['nagios'] {
+    if $monitoring_hash {
 
         class {'nagios':
                proj_name	=> 'xifi-monitoring',
@@ -465,7 +465,7 @@ class osnailyfacter::cluster_ha {
         include dcrm::ha_controller_secondary_pulsar
       }
 
-    if $monitoring_hash['nagios'] {
+    if $monitoring_hash {
 
        class {'nagios':
                proj_name	=> 'xifi-monitoring',
@@ -857,7 +857,7 @@ class osnailyfacter::cluster_ha {
         Class['openstack::compute'] -> Class['ceph']
       }
 
-    if $monitoring_hash['nagios'] {
+    if $monitoring_hash {
 
         $basic_services = ['nova-compute','nova-network','libvirt']
         $network_services = $::use_quantum ? {
@@ -1013,7 +1013,7 @@ class osnailyfacter::cluster_ha {
 #      }
 
      #ADDONS XIFI START
-      if $monitoring_hash['nagios'] {
+      if $monitoring_hash {
         class {'nagios':
                proj_name        => 'xifi-monitoring',
                services         => ['cinder-volume'],

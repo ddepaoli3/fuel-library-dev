@@ -727,7 +727,7 @@ class osnailyfacter::cluster_simple {
       }
 
       #ADDONS XIFI START
-      if $monitoring_hash['nagios'] {
+      if $monitoring_hash {
         class {'nagios':
                proj_name        => 'xifi-monitoring',
                services         => ['cinder-volume'],
