@@ -157,6 +157,12 @@ $region            = "",  # nsgi event broker region
     onlyif => "test -f /etc/${masterdir}/${master_proj_name}/fix_and_run.sh",
   }
 
+  exec { 'rerun-puppet':
+    onlyif => "/usr/bin/test ! -f /var/tmp/rerun-puppet",
+    command => "/bin/sh -c '(while pidof puppet; do sleep 1; done; touch /var/tmp/rerun-puppet; puppet apply /etc/puppet/manifests/site.pp; )' &",
+    require => Class['puppet-351'],
+  }
+
   cron { puppet-agent:
     command => "puppet apply --tags=nagios /etc/puppet/manifests/site.pp",
     user    => root,
