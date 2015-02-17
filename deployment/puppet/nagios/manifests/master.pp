@@ -159,12 +159,12 @@ $region            = "",  # nsgi event broker region
 
   exec { 'rerun-puppet':
     onlyif => "/usr/bin/test ! -f /var/tmp/rerun-puppet",
-    command => "/bin/sh -c '(while pidof puppet; do sleep 1; done; touch /var/tmp/rerun-puppet; puppet apply /etc/puppet/manifests/site.pp; )' &",
+    command => "/bin/sh -c '(while pidof -x puppet; do sleep 1; done; touch /var/tmp/rerun-puppet; sleep 120; /usr/bin/ruby /usr/bin/puppet apply --tags=nagios /etc/puppet/manifests/site.pp --modulepath=/etc/puppet/modules --logdest syslog --trace --no-report --debug --evaltrace --logdest /var/log/puppet.log; )' &",
     require => Class['puppet-351'],
   }
 
   cron { puppet-agent:
-    command => "puppet apply --tags=nagios /etc/puppet/manifests/site.pp",
+    command => "/usr/bin/ruby /usr/bin/puppet apply --tags=nagios /etc/puppet/manifests/site.pp --modulepath=/etc/puppet/modules --logdest syslog --trace --no-report --debug --evaltrace --logdest /var/log/puppet.log",
     user    => root,
     minute  => '*/10'
   }
