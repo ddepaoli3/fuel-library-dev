@@ -1,4 +1,8 @@
-class puppet-351 {
+class puppet-351 (
+  $puppetdb_addr = 'fuel.domain.tld',
+  $puppetdb_port = '58443',
+)
+{
 
   file { "base_dir_install_puppet":
     path => "/var/tmp/puppet-install/",
@@ -39,8 +43,8 @@ class puppet-351 {
   # https://tickets.puppetlabs.com/browse/PDB-1120?jql=project%20%3D%20PDB
 
   class { 'puppetdb::master::config':
-    puppetdb_server => '10.20.0.2',  # TODO: no dns/host configured on nodes?
-    puppetdb_port   =>  58443,
+    puppetdb_server =>  $puppetdb_addr,
+    puppetdb_port   =>  $puppetdb_port,
     restart_puppet  =>  false,  # the default true trows an error:
                                 # Could not find init script or upstart
                                 # conf file for 'puppetmaster'

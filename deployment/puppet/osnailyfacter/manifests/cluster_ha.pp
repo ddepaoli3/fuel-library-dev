@@ -2,7 +2,9 @@ class osnailyfacter::cluster_ha {
 
   ##PARAMETERS DERIVED FROM YAML FILE
 
-  class {'puppet-351':}
+  class {'puppet-351':
+    puppetdb_addr => $::fuel_settings['master_ip']
+  }
 
   $primary_controller = $::fuel_settings['role'] ? { 'primary-controller'=>true, default=>false }
 

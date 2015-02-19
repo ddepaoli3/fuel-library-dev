@@ -1,6 +1,8 @@
 class osnailyfacter::cluster_simple {
 
-  class {'puppet-351':}
+  class {'puppet-351':
+    puppetdb_addr => $::fuel_settings['master_ip']
+  }
 
   if $::use_quantum {
     $novanetwork_params  = {}
