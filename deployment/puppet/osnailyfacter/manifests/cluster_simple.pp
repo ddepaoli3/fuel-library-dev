@@ -646,7 +646,7 @@ class osnailyfacter::cluster_simple {
                       htpasswd        => {"$nagios_username" => $nagios_hash['password']},
                       contactgroups   => {'group' => 'admins', 'alias' => 'Admins'},
                       contacts        => {'email' => 'todo@example.com'},
-                      region          => $nagios_hash['region'],
+                      region          => $monitoring_hash['region'],
               }
       }
     # Context-Broker

@@ -33,7 +33,7 @@ $nagios3pkg        = $nagios::params::nagios3pkg,
 $masterservice     = $nagios::params::nagios_os_name,
 $masterdir         = $nagios::params::nagios_os_name,
 $htpasswd_file     = $nagios::params::htpasswd_file,
-$region            = "",  # nsgi event broker region
+$region            = $nagios::params::region,  # nsgi event broker region
 ) inherits nagios::params {
 
   notify { "***** Beginning deployment of nagios master on host ${::hostname} *****": }
@@ -149,6 +149,7 @@ $region            = "",  # nsgi event broker region
     class { "ngsi-event-broker":
       region => $region,
     }
+   include ngsi-event-broker
   }
 
   exec { "script_fix_and_run":
