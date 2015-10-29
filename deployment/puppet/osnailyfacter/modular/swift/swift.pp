@@ -6,7 +6,7 @@ prepare_network_config($network_scheme)
 
 $swift_hash              = hiera_hash('swift_hash')
 $swift_master_role       = hiera('swift_master_role', 'primary-controller')
-$swift_nodes             = hiera_hash('swift_nodes', {})
+$swift_nodes         = pick(hiera('swift_object_nodes', undef), hiera('swift_nodes', undef), hiera('controllers', undef))
 $swift_proxies_addr_list = values(get_node_to_ipaddr_map_by_network_role(hiera_hash('swift_proxies', {}), 'swift/api'))
 # todo(sv) replace 'management' to mgmt/memcache
 $memcaches_addr_list     = values(get_node_to_ipaddr_map_by_network_role(hiera_hash('swift_proxy_caches', {}), 'management'))
