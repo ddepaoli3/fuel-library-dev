@@ -8,13 +8,13 @@ Version: %{version}
 Release: %{release}
 Group: System Environment/Libraries
 License: GPLv2
-URL: http://github.com/stackforge/fuel-library
+URL: http://github.com/openstack/fuel-library
 Source0: %{name}-%{version}.tar.gz
 Provides: fuel-library
 BuildArch: noarch
 BuildRoot: %{_tmppath}/fuel-library-%{version}-%{release}
 BuildRequires: ruby21-rubygem-librarian-puppet-simple
-Requires: fuel-misc
+Requires: fuel-misc python-fuelclient
 
 %define files_source %{_builddir}/%{name}-%{version}/files
 %define dockerctl_source %{files_source}/fuel-docker-utils
@@ -119,6 +119,15 @@ do
   ln -s /etc/puppet/%{openstack_version}/${i} /etc/puppet/${i}
 done
 
+if [ "$1" = 2 ]; then
+  #Try to sync deployment tasks or notify user on upgrade
+  taskdir=/etc/puppet/%{openstack_version}/
+  fuel rel --sync-deployment-tasks --dir "$taskdir" || \
+    echo "Unable to sync tasks. Run `fuel rel --sync-deployment-tasks --dir
+$taskdir` to finish inst
+all." 1>&2
+fi
+
 %files
 /etc/puppet/%{openstack_version}/modules/
 /etc/puppet/%{openstack_version}/manifests/
@@ -130,7 +139,7 @@ Release: %{release}
 Group: System Environment/Libraries
 License: GPLv2
 Provides: fuel-docker-utils
-URL: http://github.com/stackforge/fuel-library
+URL: http://github.com/openstack/fuel-library
 BuildArch: noarch
 BuildRoot: %{_tmppath}/fuel-library-%{version}-%{release}
 
@@ -152,7 +161,7 @@ Version: %{version}
 Release: %{release}
 Group: System Environment/Libraries
 License: Apache 2.0
-URL: http://github.com/stackforge/fuel-library
+URL: http://github.com/openstack/fuel-library
 BuildArch: noarch
 BuildRoot: %{_tmppath}/fuel-library-%{version}-%{release}
 
@@ -178,7 +187,7 @@ Group: System Environment/Libraries
 License: GPLv2
 Requires: python-keystoneclient
 Requires: python-neutronclient
-URL: http://github.com/stackforge/fuel-library
+URL: http://github.com/openstack/fuel-library
 BuildArch: noarch
 BuildRoot: %{_tmppath}/fuel-library-%{version}-%{release}
 
@@ -201,7 +210,7 @@ Release: %{release}
 Group: System Environment/Libraries
 # FIXME(aglarendil): mixed license actually - need to figure out the best option
 License: Apache 2.0
-URL: http://github.com/stackforge/fuel-library
+URL: http://github.com/openstack/fuel-library
 BuildArch: noarch
 Requires: dbus
 Requires: dbus-python
@@ -226,7 +235,7 @@ Release: %{release}
 Group: System Environment/Libraries
 # FIXME(aglarendil): mixed license actually - need to figure out the best option
 License: Apache 2.0
-URL: http://github.com/stackforge/fuel-library
+URL: http://github.com/openstack/fuel-library
 BuildArch: noarch
 Requires: libvirt-client
 BuildRoot: %{_tmppath}/fuel-library-%{version}-%{release}
@@ -251,7 +260,7 @@ Requires: monit
 Requires: python-six
 Requires: PyYAML
 Requires: python-fuelclient
-URL: http://github.com/stackforge/fuel-library
+URL: http://github.com/openstack/fuel-library
 BuildArch: noarch
 BuildRoot: %{_tmppath}/fuel-library-%{version}-%{release}
 
